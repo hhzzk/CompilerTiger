@@ -98,7 +98,10 @@ public class PrettyPrintVisitor implements Visitor
     this.say("." + e.id + "(");
     for (Exp.T x : e.args) {
       x.accept(this);
-      this.say(", ");
+      if(x != e.args.getLast())
+      {
+    	  this.say(", ");
+      }
     }
     this.say(")");
     return;
@@ -276,7 +279,15 @@ public class PrettyPrintVisitor implements Visitor
     for (Dec.T d : m.formals) {
       Dec.DecSingle dec = (Dec.DecSingle) d;
       dec.type.accept(this);
-      this.say(" " + dec.id + ", ");
+      // Lab2 exercise3
+      if(m.formals.getLast() != d)
+      {
+    	  this.say(" " + dec.id + ", ");
+      }
+      else
+      {
+    	  this.say(" " + dec.id);
+      }
     }
     this.sayln(")");
     this.sayln("  {");
