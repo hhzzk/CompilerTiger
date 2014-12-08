@@ -88,7 +88,7 @@ public class PrettyPrintVisitor implements Visitor
     {
         // Lab2, exercise4
         e.left.accept(this);
-        this.say(" && ");
+        this.say(" & ");
         e.right.accept(this);
         return;
     }
