@@ -19,7 +19,8 @@ public class Parser
 {
     Lexer lexer;
     Token current;
-    int linenum;
+    Token next;
+    Integer linenum;
     int errorCount = 0; // Record the error count
     public static final int MAX_ERROR_NUM = 10; // The max error num
     
@@ -27,6 +28,16 @@ public class Parser
     {
         lexer = new Lexer(fname, fstream);
         current = lexer.nextToken();
+        if(current.kind != Kind.TOKEN_EOF)
+        	next = lexer.nextToken();
+        /*
+        Token tem = current;
+        while(tem.kind != Kind.TOKEN_EOF)
+        {
+            System.out.print(tem.kind + " ");
+            tem = lexer.nextToken();
+        }
+        */
     }
 
     // /////////////////////////////////////////////
@@ -35,7 +46,14 @@ public class Parser
 
     private void advance()
     {
-        current = lexer.nextToken();
+    	current.kind = next.kind;
+    	current.lexeme = next.lexeme;
+    	current.lineNum = next.lineNum;
+    	
+        if(current.kind != Kind.TOKEN_EOF)
+        {
+        	next = lexer.nextToken();
+        }
         linenum = current.lineNum; 
     }
 
@@ -44,7 +62,11 @@ public class Parser
     // If kind is right, return current Token;
     private Token eatToken(Kind kind)
     {
-    	Token savedCurrent = current;
+    	Token savedCurrent = new Token(null,null,null);
+    	
+    	savedCurrent.kind = current.kind;
+    	savedCurrent.lexeme = current.lexeme;
+    	savedCurrent.lineNum = current.lineNum;
     	
     	advance();
         if (kind != savedCurrent.kind)
@@ -66,6 +88,7 @@ public class Parser
         return savedCurrent;
     }
     
+    /*
     // Only check Token kind, if error print error information
     private boolean checkTokenKind(Kind kind)
     {
@@ -87,7 +110,8 @@ public class Parser
         
         return true;
     }
-
+    */
+    
     private void error()
     {
     	if(errorCount <= MAX_ERROR_NUM)
@@ -253,7 +277,7 @@ public class Parser
             }
         }
 
-        return exp;
+        return atom;
     }
 
     // TimesExp -> ! TimesExp
@@ -261,16 +285,19 @@ public class Parser
     private Exp.T parseTimesExp()
     {
     	Exp.T exp = null;
-    	Exp.T exp_not = null;
-    	
-        while (current.kind == Kind.TOKEN_NOT)
-        {
-            advance();
-        }
-        exp_not = parseNotExp();
-        exp = new Exp.Not(exp_not);
-        
-        return exp;
+		int notCount = 0; // Record "!" count
+		int i = 0;
+		
+		while (current.kind == Kind.TOKEN_NOT)
+		{
+			notCount += 1;
+			advance();
+		}
+		exp = parseNotExp();
+		for (i = 0; i < notCount; i++)
+			exp = new Exp.Not(exp);
+		
+		return exp;
     }
     
     // AddSubExp -> TimesExp * TimesExp
@@ -307,12 +334,18 @@ public class Parser
         
         while (current.kind == Kind.TOKEN_ADD || current.kind == Kind.TOKEN_SUB)
         {
-            advance();
-            right = parseAddSubExp();
             if(current.kind == Kind.TOKEN_ADD)
+            {
+            	advance();
+            	right = parseAddSubExp();
             	exp = new Exp.Add(left, right);
+            }
             else
+            {
+            	advance();
+            	right = parseAddSubExp();
             	exp = new Exp.Sub(left, right);
+            }
             return exp;
         }
 
@@ -333,7 +366,7 @@ public class Parser
         {
             advance();
             right = parseLtExp();
-            exp = new Exp.And(left, right);
+            exp = new Exp.Lt(left, right);
             return exp;
         }
         
@@ -380,6 +413,7 @@ public class Parser
             stms = parseStatements();
             eatToken(Kind.TOKEN_RBRACE);
             stm = new Stm.Block(stms);
+            return stm;
         }
         else if ( current.kind == Kind.TOKEN_IF )
         {
@@ -395,6 +429,7 @@ public class Parser
             eatToken(Kind.TOKEN_ELSE);
             elsee = parseStatement();
             stm = new Stm.If(condition, thenn, elsee);
+            return stm;
         }
         else if ( current.kind == Kind.TOKEN_WHILE)
         {
@@ -407,6 +442,7 @@ public class Parser
             eatToken(Kind.TOKEN_RPAREN);
             body = parseStatement();
             stm = new Stm.While(condition, body);
+            return stm;
         }
         else if ( current.kind == Kind.TOKEN_SYSTEM)
         {
@@ -422,16 +458,14 @@ public class Parser
             eatToken(Kind.TOKEN_RPAREN);
             eatToken(Kind.TOKEN_SEMI);
             stm = new Stm.Print(exp_print);
+            return stm;
         }
         else if ( current.kind == Kind.TOKEN_ID)
         {
         	String id = null;
         	
             temp = eatToken(Kind.TOKEN_ID);
-            if(temp != null)
-            {
-            	id = temp.lexeme;
-            }
+            id = temp.lexeme;
             if ( current.kind == Kind.TOKEN_ASSIGN )
             {
             	Exp.T exp_assign = null;
@@ -440,6 +474,7 @@ public class Parser
                 exp_assign = parseExp();
                 eatToken(Kind.TOKEN_SEMI);
                 stm = new Stm.Assign(id, exp_assign);
+                return stm;
             }
             else if ( current.kind == Kind.TOKEN_LBRACK )
             {
@@ -453,6 +488,7 @@ public class Parser
                 exp_array = parseExp();
                 eatToken(Kind.TOKEN_SEMI);
                 stm = new Stm.AssignArray(id, index, exp_array);
+                return stm;
             }
             else
             {
@@ -555,6 +591,11 @@ public class Parser
                 current.kind == Kind.TOKEN_BOOLEAN ||
                 current.kind == Kind.TOKEN_ID )
         {
+        	if(current.kind == Kind.TOKEN_ID && 
+        	   next.kind == Kind.TOKEN_ASSIGN)
+        	{
+        			return decs;
+        	}
             dec = parseVarDecl();
             decs.addLast(dec);
         }
