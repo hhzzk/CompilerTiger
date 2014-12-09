@@ -81,7 +81,7 @@ public class ClassTable
     }
     return type;
   }
-/*
+
   public void dump()
   {
 	  System.out.println("#################### Class Dump ####################");
@@ -94,20 +94,6 @@ public class ClassTable
           System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	  }
   }
-*/
-	public void dump()
-	{
-		System.out.println("===MethodTable dump start:===\n");
-		Iterator<String> methodName = this.table.keySet().iterator();
-		while (methodName.hasNext())
-		{
-			String strMethodName = methodName.next();
-			System.out.print("Var Name: " + strMethodName + "			");
-			System.out.println("Var Type: "
-					+ this.table.get(strMethodName).toString());
-		}
-		System.out.println("\n===MethodTable dump end===\n");
-	}
   
   @Override
   public String toString()
