@@ -48,14 +48,14 @@ public class MethodTable
 
   public void dump()
   {
-	  System.out.println("#################### Method Dump ####################");
+	  System.out.println("####### Method Dump ########");
+	  System.out.println("var  :  var type");
 	  for(Iterator it_table = table.keySet().iterator(); it_table.hasNext();)   
 	  {   
-          String key_table = (String) it_table.next();  
-          System.out.format("Method: %s \n", key_table);
+          String key_table = (String) it_table.next(); 
           Type.T val_table = (Type.T)table.get(key_table);
-          System.out.format("%s\n", val_table.toString());
-          System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+          System.out.format("%s : %s\n", key_table, val_table.toString());
+          System.out.println("~~~~~~~~~~~~~~~~~~~");
 	  }
   }
   
