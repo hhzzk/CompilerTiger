@@ -74,10 +74,15 @@ public class Lexer
             return new Token(Kind.TOKEN_EOF, null);
         
         // skip blanks
-        c = skipBlanks(c);
+        while (' ' == c || '\t' == c || '\n' == c || '\r' == c) 
+    	{
+    		if ('\n' == c || '\r' == c)
+    			this.LineNum++;
+    		c = this.fstream.read();
+    	}
         
         // skip commendts
-        if ('/' == c)
+        while ('/' == c)
         	c = skipComments(c);
 
         if (-1 == c)
