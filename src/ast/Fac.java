@@ -44,25 +44,25 @@ public class Fac
     // // main class: "Factorial"
     static MainClass.T factorial = new MainClassSingle(
             "Factorial", "a", new Print(new Call(
-                    new NewObject("Fac"), "ComputeFac",
-                    new util.Flist<Exp.T>().list(new Num(10)))));
+                    new NewObject("Fac", 3), "ComputeFac",
+                    new util.Flist<Exp.T>().list(new Num(10, 3)), 3), 3), 1);
 
     // // class "Fac"
     static ast.Ast.Class.T fac = new ast.Ast.Class.ClassSingle("Fac", null,
             new util.Flist<Dec.T>().list(),
             new util.Flist<Method.T>().list(new Method.MethodSingle(
-                    new Type.Int(), "ComputeFac", new util.Flist<Dec.T>()
-                    .list(new Dec.DecSingle(new Type.Int(), "num")),
+                    new Type.Int(7), "ComputeFac", new util.Flist<Dec.T>()
+                    .list(new Dec.DecSingle(new Type.Int(7), "num", 7)),
                     new util.Flist<Dec.T>().list(new Dec.DecSingle(
-                            new Type.Int(), "num_aux")), new util.Flist<Stm.T>()
-                    .list(new If(new Lt(new Id("num"),
-                                new Num(1)), new Assign("num_aux",
-                                new Num(1)), new Assign("num_aux",
-                                new Times(new Id("num"), new Call(
-                                        new This(), "ComputeFac",
+                            new Type.Int(8), "num_aux", 8)), new util.Flist<Stm.T>()
+                    .list(new If(new Lt(new Id("num", 9),
+                                new Num(1, 9), 9), new Assign("num_aux",
+                                new Num(1, 10), 10), new Assign("num_aux",
+                                new Times(new Id("num", 12), new Call(
+                                        new This(12), "ComputeFac",
                                         new util.Flist<Exp.T>().list(new Sub(
-                                                new Id("num"), new Num(1)))))))),
-                    new Id("num_aux"))));
+                                                new Id("num", 12), new Num(1, 12), 12)), 12), 12), 12), 9)),
+                    new Id("num_aux", 13), 7)), 6);
 
     // program
     public static Program.T prog = new ProgramSingle(factorial,
@@ -75,30 +75,32 @@ public class Fac
     // main class: "Sum"
     static MainClass.T sum = new MainClassSingle(
             "Sum", "a", new Print(new Call(
-                    new NewObject("Doit"), "doit",
-                    new util.Flist<Exp.T>().list(new Num(101)))));    
+                    new NewObject("Doit", 3), "doit",
+                    new util.Flist<Exp.T>().list(new Num(101, 3)), 3), 3), 1);    
 
     // class "Doit"
     static ast.Ast.Class.T doit = new ast.Ast.Class.ClassSingle("Doit", null, 
     		new util.Flist<Dec.T>().list(),
     		new util.Flist<Method.T>().list(new Method.MethodSingle(
-    				new Type.Int(), 
+    				new Type.Int(8), 
     				"doit", 
-    				new util.Flist<Dec.T>().list(new Dec.DecSingle(new Type.Int(), "n")),
-    				new util.Flist<Dec.T>().list(new Dec.DecSingle(new Type.Int(), "sum"), 
-    											 new Dec.DecSingle(new Type.Int(), "i")), 
+    				new util.Flist<Dec.T>().list(new Dec.DecSingle(new Type.Int(8), "n", 8)),
+    				new util.Flist<Dec.T>().list(new Dec.DecSingle(new Type.Int(9), "sum", 9), 
+    											 new Dec.DecSingle(new Type.Int(10), "i", 10)), 
     				new util.Flist<Stm.T>()
-    				.list(new Assign("i", new Num(0)), 
-    					  new Assign("sum", new Num(0)),
-    					  new While(new Lt(new Id("i"), new Id("n")), 
+    				.list(new Assign("i", new Num(0, 12), 12), 
+    					  new Assign("sum", new Num(0, 13), 13),
+    					  new While(new Lt(new Id("i", 14), new Id("n", 14), 14), 
     							    new Block(new util.Flist<Stm.T>().
-    							    		list(new Assign("sum", new Add(new Id("sum"), new Id("i"))), 
-    							    			 new Assign("sum", new Add(new Id("i"), new Num(1)))
-    									        )
-    								         )
-    					           )
+    							    		list(new Assign("sum", new Add(new Id("sum", 15), new Id("i", 15), 15), 15), 
+    							    			 new Assign("sum", new Add(new Id("i", 16), new Num(1, 16), 16), 16)
+    									        ),
+    									        15
+    								         ),
+    					           14
+    							  )
     					  ),
-    				new Id("sum"))));
+    				new Id("sum", 18), 8)), 7);
     
     // program prog_sum
     public static Program.T prog_sum = new ProgramSingle(sum,

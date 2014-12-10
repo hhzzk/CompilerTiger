@@ -53,9 +53,9 @@ public class ElaboratorVisitor implements ast.Visitor
         this.type = null;
     }
 
-    private void error(String info)
+    private void error(String info, Integer lineNum)
     {
-        System.out.println("Error: " + info);
+        System.out.println("Error: " + info + " in line " + lineNum + "\n");
     }
 
     // /////////////////////////////////////////////////////
@@ -67,8 +67,8 @@ public class ElaboratorVisitor implements ast.Visitor
         Type.T leftty = this.type;
         e.right.accept(this);
         if (!this.type.toString().equals(leftty.toString()))
-            error("add type mismatch!");
-        this.type = new Type.Int();
+            error("add type mismatch!", e.lineNum);
+        this.type = new Type.Int(e.lineNum);
         return;
     }
 
@@ -79,8 +79,8 @@ public class ElaboratorVisitor implements ast.Visitor
         Type.T leftty = this.type;
         e.right.accept(this);
         if (!this.type.toString().equals(leftty.toString()))
-            error("and type mismatch!");
-        this.type = new Type.Int();
+            error("and type mismatch!", e.lineNum);
+        this.type = new Type.Int(e.lineNum);
         return;
     }
 
@@ -91,8 +91,8 @@ public class ElaboratorVisitor implements ast.Visitor
         Type.T leftty = this.type;
         e.right.accept(this);
         if (!this.type.toString().equals(leftty.toString()))
-            error("sub type mismatch!");
-        this.type = new Type.Int();
+            error("sub type mismatch!", e.lineNum);
+        this.type = new Type.Int(e.lineNum);
         return;
     }
 
@@ -103,8 +103,8 @@ public class ElaboratorVisitor implements ast.Visitor
         Type.T leftty = this.type;
         e.right.accept(this);
         if (!this.type.toString().equals(leftty.toString()))
-            error("times type mismatch!");
-        this.type = new Type.Int();
+            error("times type mismatch!", e.lineNum);
+        this.type = new Type.Int(e.lineNum);
         return;
     }
 
@@ -113,13 +113,13 @@ public class ElaboratorVisitor implements ast.Visitor
     {
         e.array.accept(this);
         if (!this.type.toString().equals("@int[]"))
-            error("array type should be int!");
+            error("array type should be int!", e.lineNum);
 
         e.index.accept(this);
         if (!this.type.toString().equals("@int"))
-            error("array index should be int!");
+            error("array index should be int!", e.lineNum);
 
-        this.type = new Type.Int();
+        this.type = new Type.Int(e.lineNum);
         return;
     }
 
@@ -138,7 +138,7 @@ public class ElaboratorVisitor implements ast.Visitor
         }
         else
         {
-            error(e.exp.toString() + "should be class!");
+            error(e.exp.toString() + "should be class!", e.lineNum);
         }
 
         MethodType mty = this.classTable.getm(ty.id, e.id);
@@ -149,14 +149,14 @@ public class ElaboratorVisitor implements ast.Visitor
             argsty.addLast(this.type);
         }
         if (mty.argsType.size() != argsty.size())
-            error("function paraments size error!");
+            error("function paraments size error!", e.lineNum);
         for (int i = 0; i < argsty.size(); i++)
         {
             Dec.DecSingle dec = (Dec.DecSingle) mty.argsType.get(i);
             if (dec.type.toString().equals(argsty.get(i).toString()))
                 ;
             else
-                error("function parament "+ dec.id + " type error!");
+                error("function parament "+ dec.id + " type error!", e.lineNum);
         }
 
         this.type = mty.retType;
@@ -168,7 +168,7 @@ public class ElaboratorVisitor implements ast.Visitor
     @Override
     public void visit(False e)
     {
-        this.type = new Type.Boolean();
+        this.type = new Type.Boolean(e.lineNum);
         return;
     }
 
@@ -185,7 +185,7 @@ public class ElaboratorVisitor implements ast.Visitor
             e.isField = true;
         }
         if (type == null)
-            error("unknown type " + e.id);
+            error("unknown type " + e.id, e.lineNum);
         this.type = type;
         // record this type on this node for future use.
         e.type = type;
@@ -197,9 +197,9 @@ public class ElaboratorVisitor implements ast.Visitor
     {
         e.array.accept(this);
         if(!this.type.toString().equals("@int[]"))
-            error("length object should be array!");
+            error("length object should be array!", e.lineNum);
 
-        this.type = new Type.Int();
+        this.type = new Type.Int(e.lineNum);
         return;
     }
 
@@ -210,9 +210,9 @@ public class ElaboratorVisitor implements ast.Visitor
         Type.T ty = this.type;
         e.right.accept(this);
         if (!this.type.toString().equals(ty.toString()))
-            error("lt type mismatch!");
+            error("lt type mismatch!", e.lineNum);
 
-        this.type = new Type.Boolean();
+        this.type = new Type.Boolean(e.lineNum);
         return;
     }
 
@@ -221,44 +221,44 @@ public class ElaboratorVisitor implements ast.Visitor
     {
         e.exp.accept(this);
         if(!this.type.toString().equals("@int"))
-            error("array number should be int!");
+            error("array number should be int!", e.lineNum);
 
-        this.type = new Type.IntArray();
+        this.type = new Type.IntArray(e.lineNum);
         return;
     }
 
     @Override
     public void visit(NewObject e)
     {
-        this.type = new Type.ClassType(e.id);
+        this.type = new Type.ClassType(e.id, e.lineNum);
         return;
     }
 
     @Override
     public void visit(Not e)
     {
-        this.type = new Type.Boolean();
+        this.type = new Type.Boolean(e.lineNum);
         return;
     }
 
     @Override
     public void visit(Num e)
     {
-        this.type = new Type.Int();
+        this.type = new Type.Int(e.lineNum);
         return;
     }
 
     @Override
     public void visit(This e)
     {
-        this.type = new Type.ClassType(this.currentClass);
+        this.type = new Type.ClassType(this.currentClass, e.lineNum);
         return;
     }
 
     @Override
     public void visit(True e)
     {
-        this.type = new Type.Boolean();
+        this.type = new Type.Boolean(e.lineNum);
         return;
     }
 
@@ -272,11 +272,11 @@ public class ElaboratorVisitor implements ast.Visitor
         if (type == null)
             type = this.classTable.get(this.currentClass, s.id);
         if (type == null)
-            error("unknown type " + s.id);
+            error("unknown type " + s.id, s.lineNum);
         s.exp.accept(this);
         s.type = type;
         if(!this.type.toString().equals(type.toString()))
-            error("assign type mismatch!");
+            error("assign type mismatch!", s.lineNum);
         return;
     }
 
@@ -289,15 +289,15 @@ public class ElaboratorVisitor implements ast.Visitor
         if (type == null)
             type = this.classTable.get(this.currentClass, s.id);
         if (type == null)
-            error("unknown type " + s.id);
+            error("unknown type " + s.id, s.lineNum);
 
         s.index.accept(this);
         if(!this.type.toString().equals("@int"))
-            error("array index should be int!");
+            error("array index should be int!", s.lineNum);
 
         s.exp.accept(this);
         if(!this.type.toString().equals(type.toString()))
-            error("assign type mismatch!");
+            error("assign type mismatch!", s.lineNum);
         return;
     }
 
@@ -314,7 +314,7 @@ public class ElaboratorVisitor implements ast.Visitor
     {
         s.condition.accept(this);
         if (!this.type.toString().equals("@boolean"))
-            error("if condition should be boolean!");
+            error("if condition should be boolean!", s.lineNum);
         s.thenn.accept(this);
         s.elsee.accept(this);
         return;
@@ -325,7 +325,7 @@ public class ElaboratorVisitor implements ast.Visitor
     {
         s.exp.accept(this);
         if (!this.type.toString().equals("@int"))
-            error("print type should be int!");
+            error("print type should be int!", s.lineNum);
         return;
     }
 
@@ -334,7 +334,7 @@ public class ElaboratorVisitor implements ast.Visitor
     {
         s.condition.accept(this);
         if(!this.type.toString().equals("@boolean"))
-            error("while condition type should be boolean!");
+            error("while condition type should be boolean!", s.lineNum);
         s.body.accept(this);
         return;
     }
