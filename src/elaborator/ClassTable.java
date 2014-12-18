@@ -1,7 +1,9 @@
 package elaborator;
 
+import java.util.Hashtable;
+import java.util.Iterator;
+
 import ast.Ast.Type;
-import util.Todo;
 
 public class ClassTable
 {
@@ -82,9 +84,17 @@ public class ClassTable
 
   public void dump()
   {
-    new Todo();
+	  System.out.println("#################### Class Dump ####################");
+	  for(Iterator it_table = table.keySet().iterator(); it_table.hasNext();)   
+	  {   
+          String key_table = (String) it_table.next();  
+          System.out.format("Class: %s \n", key_table);
+          ClassBinding val_table = (ClassBinding)table.get(key_table);
+          System.out.format("%s\n", val_table.toString());
+          System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	  }
   }
-
+  
   @Override
   public String toString()
   {

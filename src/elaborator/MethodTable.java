@@ -1,5 +1,6 @@
 package elaborator;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import ast.Ast.Dec;
@@ -47,9 +48,17 @@ public class MethodTable
 
   public void dump()
   {
-    new Todo();
+	  System.out.println("####### Method Dump ########");
+	  System.out.println("var  :  var type");
+	  for(Iterator it_table = table.keySet().iterator(); it_table.hasNext();)   
+	  {   
+          String key_table = (String) it_table.next(); 
+          Type.T val_table = (Type.T)table.get(key_table);
+          System.out.format("%s : %s\n", key_table, val_table.toString());
+          System.out.println("~~~~~~~~~~~~~~~~~~~");
+	  }
   }
-
+  
   @Override
   public String toString()
   {

@@ -1,6 +1,10 @@
 package elaborator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import ast.Ast.Class;
 import ast.Ast.Class.ClassSingle;
@@ -37,8 +41,7 @@ import ast.Ast.Type;
 import ast.Ast.Type.ClassType;
 import control.Control.ConAst;
 
-public class ElaboratorVisitor implements ast.Visitor
-{
+public class ElaboratorVisitor implements ast.Visitor{
   public ClassTable classTable; // symbol table for class
   public MethodTable methodTable; // symbol table for each method
   public String currentClass; // the class name being elaborated
@@ -398,4 +401,4 @@ public class ElaboratorVisitor implements ast.Visitor
     }
 
   }
-}
+
