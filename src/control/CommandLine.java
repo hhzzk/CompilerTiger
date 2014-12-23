@@ -58,7 +58,9 @@ public class CommandLine
                     control.Control.ConCodeGen.codegen = control.Control.ConCodeGen.Kind_t.Dalvik;
                   } else if (s.equals("x86")) {
                     control.Control.ConCodeGen.codegen = control.Control.ConCodeGen.Kind_t.X86;
-                  } else {
+                  } else if (s.equals("EXE")) {
+                      control.Control.ConCodeGen.codegen = control.Control.ConCodeGen.Kind_t.EXE;
+                  }else {
                     System.out.println("bad argument: " + s);
                     output();
                     System.exit(1);

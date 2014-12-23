@@ -40,7 +40,6 @@ import codegen.C.Ast.Type.IntArray;
 import codegen.C.Ast.Vtable;
 import codegen.C.Ast.Vtable.VtableSingle;
 
-
 // Given a Java ast, translate it into a C ast and outputs it.
 
 public class TranslateVisitor implements ast.Visitor {
@@ -83,8 +82,8 @@ public class TranslateVisitor implements ast.Visitor {
 	// expressions
 	@Override
 	public void visit(ast.Ast.Exp.Add e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		e.left.accept(this);
 		Exp.T left = this.exp;
 		e.right.accept(this);
@@ -95,8 +94,8 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.And e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		e.left.accept(this);
 		Exp.T left = this.exp;
 		e.right.accept(this);
@@ -107,15 +106,15 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.ArraySelect e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		e.array.accept(this);
 		Exp.T array = this.exp;
 		e.index.accept(this);
 		Exp.T index = this.exp;
-		
+
 		this.exp = new ArraySelect(array, index);
-		
+
 		return;
 	}
 
@@ -136,10 +135,10 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.False e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		this.exp = new Num(0);
-		
+
 		return;
 	}
 
@@ -151,12 +150,12 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.Length e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		e.array.accept(this);
 		Exp.T array = this.exp;
 		this.exp = new Length(array);
-		
+
 		return;
 	}
 
@@ -172,12 +171,12 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.NewIntArray e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		e.exp.accept(this);
 		Exp.T exp = this.exp;
 		this.exp = new NewIntArray(exp);
-		
+
 		return;
 	}
 
@@ -189,13 +188,13 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.Not e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		e.exp.accept(this);
-		
+
 		Exp.T exp = this.exp;
 		this.exp = new Not(exp);
-		
+
 		return;
 	}
 
@@ -233,10 +232,10 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.True e) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		this.exp = new Num(1);
-		
+
 		return;
 	}
 
@@ -251,29 +250,29 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Stm.AssignArray s) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		s.exp.accept(this);
 		Exp.T exp = this.exp;
 		s.index.accept(this);
 		Exp.T index = this.exp;
-		
+
 		this.stm = new AssignArray(s.id, index, exp);
 		return;
 	}
 
 	@Override
 	public void visit(ast.Ast.Stm.Block s) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		LinkedList<Stm.T> newStm = new LinkedList<Stm.T>();
 		for (ast.Ast.Stm.T stm : s.stms) {
 			stm.accept(this);
 			newStm.add(this.stm);
 		}
-		
+
 		this.stm = new Block(newStm);
-		
+
 		return;
 	}
 
@@ -298,14 +297,14 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Stm.While s) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		s.condition.accept(this);
 		Exp.T condition = this.exp;
 		s.body.accept(this);
 		Stm.T body = this.stm;
 		this.stm = new While(condition, body);
-		
+
 		return;
 	}
 
@@ -313,17 +312,17 @@ public class TranslateVisitor implements ast.Visitor {
 	// type
 	@Override
 	public void visit(ast.Ast.Type.Boolean t) {
-	
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		this.type = new Int();
 	}
 
 	@Override
 	public void visit(ast.Ast.Type.ClassType t) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		this.type = new ClassType(t.id);
-		
+
 		return;
 	}
 
@@ -334,10 +333,10 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Type.IntArray t) {
-		
-		// Lab3 exercise2 by king
+
+		// Lab3 exercise6 by king
 		this.type = new IntArray();
-		
+
 		return;
 	}
 
