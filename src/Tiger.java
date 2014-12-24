@@ -158,23 +158,45 @@ public class Tiger {
 
 			Runtime r = Runtime.getRuntime();
 			Process p = null;
+			
+			// run gcc
 			try {
-				p = r.exec("gcc " + fname + ".c runtime/runtime.c");
-				p.waitFor();
-				String[] cmds = { "./a.out", "-print" };
-				p = r.exec(cmds);
-				p.waitFor();
-				InputStream is = p.getInputStream();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(is));
-				// And print each line
-				String s = null;
-				while ((s = reader.readLine()) != null) {
-					System.out.println(s);
-				}
-				is.close();
-			} catch (Exception e) {
+					p = r.exec("gcc " + fname + ".c runtime/runtime.c");
+					p.waitFor();
+				
+					InputStream isgcc = p.getInputStream();
+					BufferedReader reader0 = new BufferedReader(
+						new InputStreamReader(isgcc));
+					// And print each line
+					String s0 = null;
+					while ((s0 = reader0.readLine()) != null) {
+						System.out.println(s0);
+					}
+					isgcc.close();
+				} 
+			catch (Exception e) 
+			{
 				System.out.println("Error executing gcc.");
+			}
+			
+			// run a.out
+			try{
+					String[] cmds = { "./a.out", "-print" };
+					p = r.exec(cmds);
+					p.waitFor();
+					InputStream is = p.getInputStream();
+					BufferedReader reader = new BufferedReader(
+						new InputStreamReader(is));
+					// And print each line
+					String s = null;
+					while ((s = reader.readLine()) != null) {
+						System.out.println(s);
+					}
+					is.close();
+				} 
+			catch (Exception e) 
+			{
+				System.out.println("Error executing a.ot.");
 			}
 			break;
 		default:

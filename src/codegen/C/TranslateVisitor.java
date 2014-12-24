@@ -144,7 +144,7 @@ public class TranslateVisitor implements ast.Visitor {
 
 	@Override
 	public void visit(ast.Ast.Exp.Id e) {
-		this.exp = new Id(e.id);
+		this.exp = new Id(e.id, e.isField);
 		return;
 	}
 

@@ -134,7 +134,10 @@ public class PrettyPrintVisitor implements Visitor {
 
 	@Override
 	public void visit(Id e) {
-		this.say(e.id);
+		if(!e.isField)
+			this.say(e.id);
+		else
+			this.say("(this->" + e.id + ")");
 	}
 
 	@Override
@@ -162,7 +165,7 @@ public class PrettyPrintVisitor implements Visitor {
 		// Lab3 exercise3 by king
 		this.say("(int*)Tiger_new_array(");
 		e.exp.accept(this);
-		this.say("))");
+		this.say(")");
 
 		return;
 	}
@@ -250,15 +253,21 @@ public class PrettyPrintVisitor implements Visitor {
 		this.say("if (");
 		s.condition.accept(this);
 		this.sayln(")");
+		this.printSpaces();
+		this.sayln("{");
 		this.indent();
 		s.thenn.accept(this);
 		this.unIndent();
-		this.sayln("");
+		this.printSpaces();
+		this.sayln("}");
 		this.printSpaces();
 		this.sayln("else");
+		this.printSpaces();
+		this.sayln("{");
 		this.indent();
 		s.elsee.accept(this);
-		this.sayln("");
+		this.printSpaces();
+		this.sayln("}");
 		this.unIndent();
 		return;
 	}
