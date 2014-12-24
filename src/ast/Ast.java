@@ -294,7 +294,7 @@ public class Ast
         this.lineNum = lineNum;
       }
 
-      public Id(String id, Type.T type, boolean isField, Integer lineNum)
+      public Id(String id, Type.T type, boolean isField)
       {
         this.id = id;
         this.type = type;
@@ -517,13 +517,22 @@ public class Ast
       public String id;
       public Exp.T exp;
       public Type.T type; // type of the id
-
+      public boolean isField;
+      
       public Assign(String id, Exp.T exp, Integer lineNum)
       {
         this.id = id;
         this.exp = exp;
         this.type = null;
         this.lineNum = lineNum;
+      }
+      public Assign(String id, Exp.T exp, Integer lineNum, boolean isField)
+      {
+        this.id = id;
+        this.exp = exp;
+        this.type = null;
+        this.lineNum = lineNum;
+        this.isField = isField;
       }
 
       @Override
@@ -539,6 +548,7 @@ public class Ast
       public String id;
       public Exp.T index;
       public Exp.T exp;
+      public boolean isField;
 
       public AssignArray(String id, Exp.T index, Exp.T exp, Integer lineNum)
       {
@@ -546,6 +556,15 @@ public class Ast
         this.index = index;
         this.exp = exp;
         this.lineNum = lineNum;
+      }
+      
+      public AssignArray(String id, Exp.T index, Exp.T exp, Integer lineNum, boolean isField)
+      {
+        this.id = id;
+        this.index = index;
+        this.exp = exp;
+        this.lineNum = lineNum;
+        this.isField = isField;
       }
 
       @Override

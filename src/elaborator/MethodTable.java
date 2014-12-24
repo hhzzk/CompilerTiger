@@ -23,8 +23,8 @@ public class MethodTable
     for (Dec.T dec : formals) {
       Dec.DecSingle decc = (Dec.DecSingle) dec;
       if (this.table.get(decc.id) != null) {
-        System.out.println("duplicated parameter: " + decc.id);
-        System.exit(1);
+        //System.out.println("duplicated parameter: " + decc.id);
+        //System.exit(1);
       }
       this.table.put(decc.id, decc.type);
     }
@@ -32,8 +32,8 @@ public class MethodTable
     for (Dec.T dec : locals) {
       Dec.DecSingle decc = (Dec.DecSingle) dec;
       if (this.table.get(decc.id) != null) {
-        System.out.println("duplicated variable: " + decc.id);
-        System.exit(1);
+        //System.out.println("duplicated variable: " + decc.id);
+        //System.exit(1);
       }
       this.table.put(decc.id, decc.type);
     }

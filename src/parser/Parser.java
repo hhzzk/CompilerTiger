@@ -545,6 +545,7 @@ public class Parser
             {
                 type = new Type.IntArray(lineNum);
             	advance();
+            	advance();
             }
         }
         else if ( current.kind == Kind.TOKEN_ID)

@@ -284,8 +284,8 @@ public class ElaboratorVisitor implements ast.Visitor {
 			error("array index should be int!", s.lineNum);
 
 		s.exp.accept(this);
-		if (!this.type.toString().equals(type.toString()))
-			error("assign type mismatch!", s.lineNum);
+		if (!this.type.toString().equals("@int"))
+			error("assign array type mismatch!", s.lineNum);
 		return;
 	}
 
