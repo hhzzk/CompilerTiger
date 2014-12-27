@@ -1,19 +1,40 @@
 package codegen.bytecode;
 
 import codegen.bytecode.Ast.Class;
-import codegen.bytecode.Ast.MainClass.MainClassSingle;
-import codegen.bytecode.Ast.Method;
 import codegen.bytecode.Ast.Class.ClassSingle;
 import codegen.bytecode.Ast.Dec;
 import codegen.bytecode.Ast.Dec.DecSingle;
+import codegen.bytecode.Ast.MainClass.MainClassSingle;
+import codegen.bytecode.Ast.Method;
 import codegen.bytecode.Ast.Method.MethodSingle;
 import codegen.bytecode.Ast.Program.ProgramSingle;
 import codegen.bytecode.Ast.Stm;
+import codegen.bytecode.Ast.Stm.Aload;
+import codegen.bytecode.Ast.Stm.Areturn;
+import codegen.bytecode.Ast.Stm.ArrayLength;
+import codegen.bytecode.Ast.Stm.Astore;
+import codegen.bytecode.Ast.Stm.Goto;
+import codegen.bytecode.Ast.Stm.Iadd;
+import codegen.bytecode.Ast.Stm.Iaload;
+import codegen.bytecode.Ast.Stm.Iand;
+import codegen.bytecode.Ast.Stm.Iastore;
+import codegen.bytecode.Ast.Stm.Ificmplt;
+import codegen.bytecode.Ast.Stm.Ifne;
+import codegen.bytecode.Ast.Stm.Iload;
+import codegen.bytecode.Ast.Stm.Imul;
+import codegen.bytecode.Ast.Stm.Invokevirtual;
+import codegen.bytecode.Ast.Stm.Ireturn;
+import codegen.bytecode.Ast.Stm.Istore;
+import codegen.bytecode.Ast.Stm.Isub;
+import codegen.bytecode.Ast.Stm.LabelJ;
+import codegen.bytecode.Ast.Stm.Ldc;
+import codegen.bytecode.Ast.Stm.New;
+import codegen.bytecode.Ast.Stm.NewIntArra;
+import codegen.bytecode.Ast.Stm.Print;
 import codegen.bytecode.Ast.Type;
 import codegen.bytecode.Ast.Type.ClassType;
 import codegen.bytecode.Ast.Type.Int;
 import codegen.bytecode.Ast.Type.IntArray;
-import codegen.bytecode.Ast.Stm.*;
 
 public class PrettyPrintVisitor implements Visitor
 {
@@ -140,7 +161,55 @@ public class PrettyPrintVisitor implements Visitor
     this.isayln("istore " + s.index);
     return;
   }
+  
+  // Lab3 exercise11
+  @Override
+  public void visit(Iadd s)
+  {
+    this.isayln("iadd");
+    return;
+  }
+  
+  // Lab3 exercise11
+  @Override
+  public void visit(Iand s)
+  {
+    this.isayln("iand");
+    return;
+  }
 
+  // Lab3 exercise11
+  @Override
+  public void visit(ArrayLength s)
+  {
+    this.isayln("arraylength");
+    return;
+  }
+  
+  // Lab3 exercise11
+  @Override
+  public void visit(NewIntArra s)
+  {
+    this.isayln("newarray int");
+    return;
+  }
+  
+  // Lab3 exercise11
+  @Override
+  public void visit(Iaload s)
+  {
+    this.isayln("iaload");
+    return;
+  }
+  
+  // Lab3 exercise11
+  @Override
+  public void visit(Iastore s)
+  {
+    this.isayln("iastore");
+    return;
+  }
+  
   @Override
   public void visit(Isub s)
   {
