@@ -31,6 +31,18 @@ public interface Visitor
 
   public void visit(Istore s);
 
+  public void visit(Iadd s);
+  
+  public void visit(Iand s);
+  
+  public void visit(ArrayLength s);
+  
+  public void visit(NewIntArra s);
+  
+  public void visit(Iaload s);
+  
+  public void visit(Iastore s);
+  
   public void visit(Isub s);
 
   public void visit(Invokevirtual s);
