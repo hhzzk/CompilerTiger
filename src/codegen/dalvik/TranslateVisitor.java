@@ -2,6 +2,8 @@ package codegen.dalvik;
 
 import java.util.LinkedList;
 
+import util.Label;
+import util.Temp;
 import codegen.dalvik.Ast.Class;
 import codegen.dalvik.Ast.Class.ClassSingle;
 import codegen.dalvik.Ast.Dec;
@@ -13,10 +15,21 @@ import codegen.dalvik.Ast.Method.MethodSingle;
 import codegen.dalvik.Ast.Program;
 import codegen.dalvik.Ast.Program.ProgramSingle;
 import codegen.dalvik.Ast.Stm;
-import codegen.dalvik.Ast.Stm.*;
+import codegen.dalvik.Ast.Stm.Const;
+import codegen.dalvik.Ast.Stm.Goto32;
+import codegen.dalvik.Ast.Stm.Iflt;
+import codegen.dalvik.Ast.Stm.Ifnez;
+import codegen.dalvik.Ast.Stm.Invokevirtual;
+import codegen.dalvik.Ast.Stm.Move16;
+import codegen.dalvik.Ast.Stm.Moveobject16;
+import codegen.dalvik.Ast.Stm.Mulint;
+import codegen.dalvik.Ast.Stm.NewInstance;
+import codegen.dalvik.Ast.Stm.Print;
+import codegen.dalvik.Ast.Stm.Return;
+import codegen.dalvik.Ast.Stm.ReturnObject;
+import codegen.dalvik.Ast.Stm.Subint;
 import codegen.dalvik.Ast.Type;
-import util.Label;
-import util.Temp;
+import codegen.dalvik.Ast.Stm.LabelJ;
 
 // Given a Java AST, translate it into Dalvik bytecode.
 
@@ -223,6 +236,8 @@ public class TranslateVisitor implements ast.Visitor
   @Override
   public void visit(ast.Ast.Exp.True e)
   {
+
+		return;
   }
 
   // ///////////////////////////////////////////////////
@@ -250,6 +265,11 @@ public class TranslateVisitor implements ast.Visitor
   @Override
   public void visit(ast.Ast.Stm.Block s)
   {
+		// Lab3 exercise11 by king
+		for (ast.Ast.Stm.T stm : s.stms)
+			stm.accept(this);
+		
+		return;
   }
 
   @Override
@@ -282,6 +302,25 @@ public class TranslateVisitor implements ast.Visitor
   @Override
   public void visit(ast.Ast.Stm.While s)
   {
+		// Lab3 exercise11
+		Label sl = new Label(), tl = new Label();
+		Label fl = new Label(), el = new Label();
+
+		emit(new LabelJ(sl));
+		s.condition.accept(this);
+		String evar = this.evar;
+		emit(new Ifnez(evar, tl));
+
+		emit(new LabelJ(fl));
+		emit(new Goto32(el));
+
+		emit(new LabelJ(tl));
+		s.body.accept(this);
+		emit(new Goto32(sl));
+
+		emit(new LabelJ(el));
+
+		return;
   }
 
   // ////////////////////////////////////////////////////////
@@ -289,11 +328,19 @@ public class TranslateVisitor implements ast.Visitor
   @Override
   public void visit(ast.Ast.Type.Boolean t)
   {
+	  // Lab3 exercise14
+	  this.type = new Type.Int();
+	  
+	  return;
   }
 
   @Override
   public void visit(ast.Ast.Type.ClassType t)
   {
+	  // Lab3 exercise14
+	  this.type = new Type.ClassType(t.id);
+	  
+	  return;
   }
 
   @Override
@@ -305,6 +352,10 @@ public class TranslateVisitor implements ast.Visitor
   @Override
   public void visit(ast.Ast.Type.IntArray t)
   {
+	  //Lab3 exercise14
+	  this.type = new Type.IntArray();
+	  
+	  return;
   }
 
   // dec

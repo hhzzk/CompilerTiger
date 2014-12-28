@@ -284,6 +284,90 @@ public class Ast
       }
     }
 
+    // Lab3 exercise10
+    public static class Iadd extends T
+    {
+      public Iadd()
+      {
+      }
+
+      @Override
+      public void accept(Visitor v)
+      {
+        v.visit(this);
+      }
+    }
+    
+    // Lab3 exercise10
+    public static class Iand extends T
+    {
+      public Iand()
+      {
+      }
+
+      @Override
+      public void accept(Visitor v)
+      {
+        v.visit(this);
+      }
+    }
+    
+    // Lab3 exercise10
+    public static class Iaload extends T
+    {
+      public Iaload()
+      {
+      }
+
+      @Override
+      public void accept(Visitor v)
+      {
+        v.visit(this);
+      }
+    }
+    
+    // Lab3 exercise10
+    public static class Iastore extends T
+    {
+      public Iastore()
+      {
+      }
+
+      @Override
+      public void accept(Visitor v)
+      {
+        v.visit(this);
+      }
+    }
+    
+    // Lab3 exercise10
+    public static class ArrayLength extends T
+    {
+      public ArrayLength()
+      {
+      }
+
+      @Override
+      public void accept(Visitor v)
+      {
+        v.visit(this);
+      }
+    }
+    
+    // Lab3 exercise10
+    public static class NewIntArra extends T
+    {
+      public NewIntArra()
+      {
+      }
+
+      @Override
+      public void accept(Visitor v)
+      {
+        v.visit(this);
+      }
+    }
+    
     public static class Isub extends T
     {
       public Isub()

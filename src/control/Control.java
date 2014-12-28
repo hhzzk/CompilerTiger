@@ -37,7 +37,7 @@ public class Control
     public static String outputName = null;
 
     public static enum Kind_t {
-      Bytecode, C, Dalvik, X86
+      Bytecode, C, Dalvik, X86, EXE
     }
 
     public static Kind_t codegen = Kind_t.C;
